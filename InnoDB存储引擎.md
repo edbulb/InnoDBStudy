@@ -1,4 +1,4 @@
-﻿# InnoDB存储引擎
+# InnoDB存储引擎
 ----
 >- 第一个支持ACID事务的MySQL引擎
 - 行级锁设计
@@ -14,3 +14,4 @@
     
   ---
 >- 内存  
+![img](https://github.com/edbulb/InnoDBStudy/blob/master/img/iothread.png)
