@@ -26,5 +26,6 @@
    获取缓冲尺的容量大小： * show vaiables like \' innodb_buffer_pool_size \' *:   ![img](https://raw.githubusercontent.com/edbulb/InnoDBStudy/master/img/innodn_buffer_pool_size.png)
    具体在缓冲池中有：索引页、数据页，[undo页](https://blog.csdn.net/alexdamiao/article/details/51872477)、插入缓冲、自适应哈希索引、InnoDB存储所信息、数据字典信息等。在其中索引页和数据页占了很大一部分。如图：  ![img](https://raw.githubusercontent.com/edbulb/InnoDBStudy/master/img/huanchongchi.png)   
    InnoDB允许多个缓冲池的存在，每个页根据不同的哈希值分配到不同的缓冲池中，这样可以减少数据库的内部支援竞争。  
-   使用 *show variables like innodb_buffer_pool_instancs*可以查看当前缓冲池的个数。（当前使用的是mysql5.6）如图：   ![img](https://raw.githubusercontent.com/edbulb/InnoDBStudy/master/img/innodn_buffer_pool_innodb_instances.png)
+   使用 *show variables like innodb_buffer_pool_instancs*可以查看当前缓冲池的个数。（当前使用的是mysql5.6）如图：   
+   ![img](https://raw.githubusercontent.com/edbulb/InnoDBStudy/master/img/innodb_buffer_pool_instances.png)
    
