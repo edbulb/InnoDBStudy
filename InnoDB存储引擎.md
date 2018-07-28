@@ -28,4 +28,14 @@
    InnoDB允许多个缓冲池的存在，每个页根据不同的哈希值分配到不同的缓冲池中，这样可以减少数据库的内部支援竞争。  
    使用 *show variables like innodb_buffer_pool_instancs*可以查看当前缓冲池的个数。（当前使用的是mysql5.6）如图：   
    ![img](https://raw.githubusercontent.com/edbulb/InnoDBStudy/master/img/innodb_buffer_pool_instances.png)
+    * LRU List、Free List和Flush List  
+   InnoDB存储引擎对内存的管理，通常innodb的缓冲池页为16k。
+   缓冲池使用（last recent used）最近最少使用，方法来管理数据。最多使用的页放在LRU前列，最不频繁使用的放在LRU后端，当缓冲池不能存放新读取的页的时候把最靠后的页释放。
+   在InnoDB中最新访问的页不会一开始就放在LRU的最前列，而是放在midpoint的位置上使用 *show variables like 'innodb_old_bloacks_pct' *可以查询出 midpoint的位置：    ![img](https://raw.githubusercontent.com/edbulb/InnoDBStudy/master/img/midpoint.png)
+   其中37为活跃热点
+   为什么不把新读取的页放入到RLU的最前端：因为在其它的一些SQL操作中的页会被刷新，而这些页通常只会使用一次，这样会大大降低缓冲池的工作效率。（这些SQl操作通常是：索引或者数据的扫描）。
+   （midpoint之后的列表成为old列表，之前的列表成为new列表：热端）
+   innodb_old_blocks_time这个值就是用于表存在多久会被放入RLU的热端（前端）innodb_old_blocks_time是可以设置的：（SQL） * set global innodb_old_blocks_time = 1000 *   
+   当页从old转变成new的时候成为 page make young 当old页因为innodb_old_blocks_time的设置没有从old转到new的时候成为page not make young，使用 show engine innodb status;时可以看到上面的数据。Buffer pool hit rate表示缓冲池命中的概率，一般是95%以上，如果没有的话应该检查是否由于全表扫描造成。在innodb1.2后可以通过查看innodb_buffer_pool_status来查看缓冲池的状态。
+
    
